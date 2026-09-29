@@ -1,0 +1,52 @@
+# status-page-gen example config. Relative paths are relative to this file.
+title: DeMark Studio status
+description: Public sites run by DeMark Studio, checked from one small machine.
+base_url: ""            # optional; set to your public URL to get absolute links in feed.xml
+output_dir: ../site     # index.html, status.json and feed.xml are written here
+history: ../data/history.db
+incidents_dir: incidents
+timeout: 15             # seconds, default for every check
+degraded_ms: 3000       # slower than this counts as "degraded" (0 disables)
+days: 90                # number of uptime bars
+concurrency: 1          # 1 = one check at a time (polite default), max 8
+
+checks:
+  - id: main-site
+    name: demarkstudio.ca
+    type: http
+    url: https://demarkstudio.ca
+    expect_status: 200
+
+  - id: demo-pub
+    name: Riverside Pub demo site
+    type: http
+    url: https://demo.demarkstudio.ca/riverside-pub/site
+    expect_status: 200
+
+  - id: portfolio
+    name: marvin.demarkstudio.ca
+    type: http
+    url: https://marvin.demarkstudio.ca
+    expect_status: 200
+
+  - id: tls-main
+    name: TLS certificate, demarkstudio.ca
+    type: tls
+    host: demarkstudio.ca
+    warn_days: 21
+    fail_days: 7
+
+  - id: tls-portfolio
+    name: TLS certificate, marvin.demarkstudio.ca
+    type: tls
+    host: marvin.demarkstudio.ca
+
+  - id: tls-demo
+    name: TLS certificate, demo.demarkstudio.ca
+    type: tls
+    host: demo.demarkstudio.ca:443
+
+  - id: tcp-main
+    name: demarkstudio.ca port 443
+    type: tcp
+    host: demarkstudio.ca:443
